@@ -130,6 +130,10 @@
         let capsToggle = document.getElementById("capslock");
         let sfx = document.getElementById("sfx");
 
+        let storage = window.localStorage;
+        if (!storage.getItem("charset")) storage.setItem("charset", "asdfghjkl");
+        charset.value = storage.getItem("charset");
+
         // Listen for keystrokes
         window.addEventListener("keydown", event => {
             let isFocused = document.activeElement;
@@ -147,6 +151,8 @@
 
             // Copy keysmash to clipboard whenever Ctrl + C is detected
             else if (event.ctrlKey && event.key.toLowerCase() == "c") copyKeysmash();
+
+            else storage.setItem("charset", charset.value); // If none of the above conditions, set our charset in localStorage
         });
 
         // Copy the keysmash to clipboard when clicked
