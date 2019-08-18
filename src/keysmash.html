@@ -12,12 +12,6 @@
     <script src="js/keysmash.js"></script>
     <script src="js/coolthings.js"></script>
     <script src="js/utils.js"></script>
-
-    <script>
-        if (isElectron()) {
-            const ipc = require("electron").ipcRenderer; // Load Electron IPC communication
-        }
-    </script>
 </head>
 
 <body>
@@ -181,14 +175,6 @@
 
         // Copy the keysmash to clipboard when clicked
         keysmashElement.addEventListener("click", () => copyKeysmash());
-
-        // Listen for IPC requests from main process (if we're running in Electron)
-        if (isElectron()) {
-            ipc.on("keysmash", (event, args) => {
-                lemmeSmash(charset.value); // Generate a keysmash
-                ipc.send("keysmash", keysmashElement.innerHTML); // Send the keysmash to the main process
-            });
-        }
 
         // Change the body text as a bonus
         new Promise(resolve => {
