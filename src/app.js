@@ -33,7 +33,7 @@ io.registerShortcut([29, 57], keys => {
 ipcMain.on("keysmash", (event, value) => {
     if (shift || capsLock) value = value.toUpperCase();
     clipboard.writeSync(value);
-    robot.keyTap("v");
+    robot.keyTap("v", "control");
 });
 
 io.start(); // Finally, start listening for events
