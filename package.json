@@ -16,17 +16,20 @@
     "name": "xBelladonna",
     "email": "isabelladonnamoore@outlook.com"
   },
-  "license": "MIT",
+  "license": "Apache-2.0",
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "src/images/icon.png"
+        "icon": "src/images/icon.ico"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Autosmash"
+            "name": "Autosmash",
+            "iconUrl": "https://github.com/xBelladonna/Autosmash/blob/master/src/images/icon.png",
+            "setupExe": "Autosmash-installer.exe",
+            "setupIcon": "src/images/icon.ico"
           }
         },
         {

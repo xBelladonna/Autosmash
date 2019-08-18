@@ -22,7 +22,7 @@ app.on("activate", () => {
 });
 
 // Finally, load the rest of the app
-require("./app.js");
+require("./hook.js");
 
 
 
