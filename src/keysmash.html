@@ -12,6 +12,10 @@
     <script src="js/keysmash.js"></script>
     <script src="js/coolthings.js"></script>
     <script src="js/utils.js"></script>
+
+    <script>
+        const ipc = require("electron").ipcRenderer; // Load Electron IPC communication
+    </script>
 </head>
 
 <body>
@@ -126,8 +130,6 @@
         let capsToggle = document.getElementById("capslock");
         let sfx = document.getElementById("sfx");
 
-        const ipc = require("electron").ipcRenderer;
-
         // Listen for keystrokes
         window.addEventListener("keydown", event => {
             let isFocused = document.activeElement;
@@ -145,13 +147,16 @@
 
             // Copy keysmash to clipboard whenever Ctrl + C is detected
             else if (event.ctrlKey && event.key.toLowerCase() == "c") copyKeysmash();
-
-            // And finally send the contents of the keysmash field to the main process
-            ipc.send("charset", charset.value);
         });
 
         // Copy the keysmash to clipboard when clicked
         keysmashElement.addEventListener("click", () => copyKeysmash());
+
+        // Listen for IPC requests
+        ipc.on("keysmash", (event, args) => {
+            lemmeSmash(charset.value); // Generate a keysmash
+            ipc.send("keysmash", keysmashElement.innerHTML); // Send the keysmash to the main process
+        });
 
         // Change the body text as a bonus
         new Promise(resolve => {

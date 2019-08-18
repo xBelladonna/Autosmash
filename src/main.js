@@ -7,7 +7,7 @@ if (require("electron-squirrel-startup")) { // eslint-disable-line global-requir
     app.quit();
 }
 
-let window; // Store the window object in a global so it doesn"t get ~~yeeted~~ garbage collected
+let window; // Store the window object in a global so it doesn't get yeeted by the GC
 
 app.on("ready", createWindow); // Once initialized, create our window
 
@@ -53,6 +53,9 @@ function createWindow() {
 
     // and load the index.html of the app.
     window.loadURL(`file://${__dirname}/keysmash.html`);
+
+    // then export the window so we can use it in node
+    exports.webContents = window.webContents;
 
     // Yeet the window when it's closed to save memory
     window.on("closed", () => {

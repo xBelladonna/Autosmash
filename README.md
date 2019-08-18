@@ -1,6 +1,6 @@
 # Autosmash
 
-Type keysmashes at the press of a single key (or key combination) of your choice.
+Type keysmashes at the press of ~~a single key (or key combination) of your choice~~ Ctrl + Space.
 
 Supports custom characters and capital smashes (with Shift or Caps Lock).
 

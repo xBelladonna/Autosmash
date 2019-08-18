@@ -1,15 +1,8 @@
-const keysmash = require("./keysmash.js");
 const io = require("iohook");
 const clipboard = require("clipboardy");
 const robot = require("robotjs");
 const { ipcMain } = require("electron");
-
-let charset = "asdfghjkl";
-
-// Receive charset by ipc communication from renderer process
-ipcMain.on("charset", (event, value) => {
-    charset = value;
-});
+let window = require("./main.js");
 
 let shift = false;
 let capsLock = false;
@@ -29,26 +22,18 @@ io.on("keyup", event => {
     if (event.keycode === 42) shift = false;
 });
 
-// Register hotkey (Insert) and call keysmash function on press
-io.registerShortcut([61010], keys => {
-    smash(charset);
+robot.setKeyboardDelay(50); // Refuse to smash (lmao) unless 50 ms has passed since the last smash
+
+// Register hotkey (Ctrl + Space) and send request to renderer for a keysmash
+io.registerShortcut([29, 57], keys => {
+    window.webContents.send("keysmash", null);
+});
+
+// Listen for keysmashes from renderer and yeet it into whatever's focused
+ipcMain.on("keysmash", (event, value) => {
+    if (shift || capsLock) value = value.toUpperCase();
+    clipboard.writeSync(value);
+    robot.keyTap("v");
 });
 
 io.start(); // Finally, start listening for events
-
-
-
-// Generate keysmash, copy to clipboard, then "press" Ctrl + V
-function smash(charset) {
-    if (shift || capsLock) charset = charset.toUpperCase();
-    const string = keysmash.ISOStandard(charset);
-    clipboard.writeSync(string);
-    robot.keyTap("v", "control");
-}
-
-// Wait for the given number of milliseconds
-function sleep(time) {
-    return new Promise(resolve => {
-        setTimeout(resolve, time);
-    });
-}
