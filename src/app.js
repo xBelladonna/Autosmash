@@ -6,6 +6,7 @@ let window = require("./main.js");
 
 let shift = false;
 let capsLock = false;
+let wait = false;
 
 // Set modifiers on keydown
 io.on("keydown", event => {
@@ -22,18 +23,20 @@ io.on("keyup", event => {
     if (event.keycode === 42) shift = false;
 });
 
-robot.setKeyboardDelay(500); // Refuse to smash (lmao) unless half a second has passed since the last smash
-
 // Register hotkey (Ctrl + Space) and send request to renderer for a keysmash
+// Also "debounce" for 200ms since the event keeps firing as long as the keys are held
 io.registerShortcut([29, 57], keys => {
+    if (wait) return;
+    wait = true;
     window.webContents.send("keysmash", null);
+    setTimeout(() => { wait = false; }, 200);
 });
 
 // Listen for keysmashes from renderer and yeet it into whatever's focused
-ipcMain.on("keysmash", (event, value) => {
+ipcMain.on("keysmash", async (event, value) => {
     if (shift || capsLock) value = value.toUpperCase();
-    clipboard.writeSync(value);
-    robot.keyTap("v", "control");
+    await clipboard.write(value);
+    robot.keyTap("v"); // We only press "v" since we're already holding Ctrl (or Command)
 });
 
 io.start(); // Finally, start listening for events
