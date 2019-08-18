@@ -1,0 +1,37 @@
+const coolThingsToAddOntoTheEnd = [
+    "made fresh just for you",
+    "please use responsibly",
+    "I hope you enjoy it",
+    "made with love",
+    "I put a lot of effort into this one",
+    "hhh",
+    "gdfhgdfghdfgh",
+    "click it or press ctrl + c to copy",
+    "use caps lock to make them louder"
+];
+
+let lastCoolThing = -1;
+
+// Select a cool thing from the array
+function getCoolThingToAddOntoTheEnd() {
+    let coolThing;
+    do {
+        coolThing = Math.floor(Math.random() * coolThingsToAddOntoTheEnd.length);
+    } while (coolThing == lastCoolThing);
+    lastCoolThing = coolThing;
+    return coolThingsToAddOntoTheEnd[coolThing];
+}
+
+// Generate a message with the cool thing added onto the end
+function generateMessage() {
+    let chance = Math.random();
+    let msg;
+
+    if (chance < 0.50)
+        msg = `Here is your keysmash ${getCoolThingToAddOntoTheEnd()}:`;
+    else if (chance >= 0.50 && chance <= 0.70)
+        msg = `H-hewwo, hewe is youw keysmash owo ${getCoolThingToAddOntoTheEnd().replace(RegExp(/l|r/ig), "w").replace(RegExp(/th/ig), "d")}:`
+    else msg = `Here, have some of my best work ${getCoolThingToAddOntoTheEnd()}:`;
+
+    return msg;
+}

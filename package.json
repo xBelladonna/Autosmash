@@ -1,0 +1,78 @@
+{
+  "name": "Autosmash",
+  "productName": "Autosmash",
+  "version": "1.0.0",
+  "description": "Types keysmashes for you at the press of a button",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "xBelladonna",
+    "email": "isabelladonnamoore@outlook.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "src/images/icon.png"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "Autosmash"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "clipboardy": "^2.1.0",
+    "iohook": "^0.6.1",
+    "robotjs": "^0.5.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "6.0.0-beta.44",
+    "@electron-forge/maker-deb": "6.0.0-beta.44",
+    "@electron-forge/maker-rpm": "6.0.0-beta.44",
+    "@electron-forge/maker-squirrel": "6.0.0-beta.44",
+    "@electron-forge/maker-zip": "6.0.0-beta.44",
+    "electron": "4.2.9"
+  },
+  "iohook": {
+    "targets": [
+      "node-64",
+      "electron-69"
+    ],
+    "platforms": [
+      "win32",
+      "darwin",
+      "linux"
+    ],
+    "arches": [
+      "x64",
+      "ia32"
+    ]
+  }
+}

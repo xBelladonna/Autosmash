@@ -1,0 +1,167 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>dfghjhfhsdfgahfg</title>
+    <meta name="description" content="keysmash generator for all your fgsjfhgdgjfhd needs">
+    <meta name="theme-color" content="#6495ED">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/stylesheet.css">
+
+    <script src="js/keysmash.js"></script>
+    <script src="js/coolthings.js"></script>
+    <script src="js/utils.js"></script>
+</head>
+
+<body>
+    <!-- Generate interactive content dynamically using JavaScript DOM methods wrapped in Promises.
+    This means we can declare private vars using `let` which are garbage collected as soon as the
+    promise is fulfilled, meaning we don't have to worry about using up var names. Most of the page
+    is generated this way, unless the element created is supposed to be globally accessible -->
+
+    <audio id="yeet" autostart="false" src="audio/yeet.ogg"></audio>
+    <p class="plaintext" id="body">Click below to generate some fresh keysmashes</p>
+
+    <div>
+        <!-- Open a div container for a table containing the main UI -->
+        <table class="plaintext">
+            <tr>
+                <!-- Create the submit button -->
+                <td id="cell-button-generate" rowspan="2" style="padding: 0 2em 0 0;">
+                    <button id="button-generate" type="submit" class="button">sdksfdjagsjlh</button>
+                    <script>
+                        new Promise(resolve => {
+                            let element = document.getElementById("button-generate");
+                            element.addEventListener("click", () => lemmeSmash(charset.value));
+                            resolve();
+                        });
+                    </script>
+                </td>
+                <!-- Create the Caps Lock toggle switch -->
+                <td class="label">Caps Lock</td>
+                <td>
+                    <label id="cell-toggle-capslock" class="switch">
+                        <input type="checkbox" id="capslock">
+                        <span class="slider"></span>
+                        <script>
+                            new Promise(resolve => {
+                                let element = document.getElementById("capslock");
+                                element.addEventListener("click", () => toggleCapsLock(event));
+                                resolve();
+                            });
+                        </script>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <!-- Add the Yeet toggle switch -->
+                <td class="label">Yeet</td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" id="sfx">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <!-- Merge all 4 cells of the table to create a "header" -->
+                <td colspan="4">
+                    <p class="plaintext" style="text-align: center; padding: 1em 0 5px 0;">Keysmash type:</p>
+                </td>
+            </tr>
+            <tr>
+                <!-- Create the "ISO Standard" radio button -->
+                <td id="cell-button-isostandard">
+                    <input type="radio" class="plaintext" id="button-isostandard" name="keysmashtype" checked>
+                    ISO Standard
+                    <script>
+                        let ISOStandardButton = document.getElementById("button-isostandard");
+
+                        new Promise(resolve => {
+                            let element = document.getElementById("cell-button-isostandard");
+                            element.addEventListener("click", () => ISOStandardButton.checked = true);
+                            resolve();
+                        });
+                    </script>
+                </td>
+                <!-- Create the "Four-letter repeating" radio button -->
+                <td colspan="2" id="cell-button-fourletter">
+                    <input type="radio" class="plaintext" id="button-fourletter" name="keysmashtype">
+                    Four-letter repeating
+                    <script>
+                        let fourLetterButton = document.getElementById("button-fourletter");
+
+                        new Promise(resolve => {
+                            let element = document.getElementById("cell-button-fourletter");
+                            element.addEventListener("click", () => fourLetterButton.checked = true);
+                            resolve();
+                        });
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <!-- Create the character set text box -->
+                <td colspan="4" style="text-align: center;" id="field-charset">
+                    <input type="text" style="font-size: 16pt;" id="charset" value="asdfghjkl">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- New div container for the generated element -->
+    <div class="plaintext" id="generated" style="display: none;">
+        <!-- Preload the fields in case of potato -->
+        <p class="plaintext" id="here">Here is your keysmash made fresh just for you:</p>
+        <p class="plaintext" id="keysmash">fghjgfhjgh</p>
+    </div>
+
+    <script>
+        // Declare (and assign) our vars
+        let charset = document.getElementById("charset");
+        let generatedElement = document.getElementById("generated");
+        let hereElement = document.getElementById("here");
+        let keysmashElement = document.getElementById("keysmash");
+        let capsLock = false;
+        let capsToggle = document.getElementById("capslock");
+        let sfx = document.getElementById("sfx");
+
+        const ipc = require("electron").ipcRenderer;
+
+        // Listen for keystrokes
+        window.addEventListener("keydown", event => {
+            let isFocused = document.activeElement;
+
+            // If it was the caps lock key pressed, toggle caps lock state and slider
+            if (event.key == "CapsLock") toggleCapsLock(event);
+
+            // If the key pressed was Enter, or Space while no element (i.e. just document body) is focused, and the Ctrl key isn't held, generate a new keysmash
+            else if ((event.key === "Enter" || (event.key === " " && (document.body === isFocused))) && !event.ctrlKey) lemmeSmash(charset.value);
+
+            // If the key pressed was a letter, generate a new keysmash
+            // We avoid generating one if the Ctrl key is held and/or if the character set text field is focused
+            else if (event.keyCode >= 65 && event.keyCode <= 90 && !event.ctrlKey && !(charset === isFocused))
+            generateKeysmash(charset.value);
+
+            // Copy keysmash to clipboard whenever Ctrl + C is detected
+            else if (event.ctrlKey && event.key.toLowerCase() == "c") copyKeysmash();
+
+            // And finally send the contents of the keysmash field to the main process
+            ipc.send("charset", charset.value);
+        });
+
+        // Copy the keysmash to clipboard when clicked
+        keysmashElement.addEventListener("click", () => copyKeysmash());
+
+        // Change the body text as a bonus
+        new Promise(resolve => {
+            if (charset.value.length > 0) {
+                let element = document.getElementById("body");
+                element.innerHTML = `Click below to generate some fresh ${ISOStandardKeysmash(charset.value)}`;
+            }
+            resolve();
+        });
+    </script>
+</body>
+
+</html>
