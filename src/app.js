@@ -22,7 +22,7 @@ io.on("keyup", event => {
     if (event.keycode === 42) shift = false;
 });
 
-robot.setKeyboardDelay(50); // Refuse to smash (lmao) unless 50 ms has passed since the last smash
+robot.setKeyboardDelay(500); // Refuse to smash (lmao) unless half a second has passed since the last smash
 
 // Register hotkey (Ctrl + Space) and send request to renderer for a keysmash
 io.registerShortcut([29, 57], keys => {
