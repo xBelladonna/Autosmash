@@ -14,7 +14,9 @@
     <script src="js/utils.js"></script>
 
     <script>
-        const ipc = require("electron").ipcRenderer; // Load Electron IPC communication
+        if (isElectron()) {
+            const ipc = require("electron").ipcRenderer; // Load Electron IPC communication
+        }
     </script>
 </head>
 
@@ -24,9 +26,32 @@
     promise is fulfilled, meaning we don't have to worry about using up var names. Most of the page
     is generated this way, unless the element created is supposed to be globally accessible -->
 
+    <div class="top-right-corner" id="top-right-corner"></div>
     <audio id="yeet" autostart="false" src="audio/yeet.ogg"></audio>
     <p class="plaintext" id="body">Click below to generate some fresh keysmashes</p>
-    <p class="plaintext">Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open</p>
+    <script>
+        new Promise(resolve => {
+            if (isElectron()) { // Display the key combination hint if we're in Electron
+                let element = document.createElement("p");
+                element.className = "plaintext";
+                element.innerHTML = "Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open";
+                resolve(document.body.appendChild(element));
+            }
+            else resolve();
+        });
+
+        new Promise(resolve => {
+            if (!isElectron()) {
+                let element = document.createElement("a");
+                element.className = "plaintext";
+                element.innerHTML = "Download the app!";
+                element.href = "https://nightshade.fun/keysmash/app/Autosmash-installer.exe";
+                let div = document.getElementById("top-right-corner");
+                resolve(div.appendChild(element));
+            }
+            else resolve();
+        });
+    </script>
 
     <div>
         <!-- Open a div container for a table containing the main UI -->
@@ -140,12 +165,12 @@
             if (event.key == "CapsLock") toggleCapsLock(event);
 
             // If the key pressed was Enter, or Space while no element (i.e. just document body) is focused, and the Ctrl key isn't held, generate a new keysmash
-            else if ((event.key === "Enter" || (event.key === " " && (document.body === isFocused))) && (!event.ctrlKey || !event.metaKey))
+            else if ((event.key === "Enter" || (event.key === " " && (document.body === isFocused))) && !event.ctrlKey && !event.metaKey)
                 lemmeSmash(charset.value);
 
             // If the key pressed was a letter, generate a new keysmash
             // We avoid generating one if the Ctrl key is held and/or if the character set text field is focused
-            else if (event.keyCode >= 65 && event.keyCode <= 90 && (!event.ctrlKey || !event.metaKey) && !(charset === isFocused))
+            else if (event.keyCode >= 65 && event.keyCode <= 90 && !event.ctrlKey && !event.metaKey && !(charset === isFocused))
                 generateKeysmash(charset.value);
 
             // Copy keysmash to clipboard whenever Ctrl + C is detected
@@ -157,11 +182,13 @@
         // Copy the keysmash to clipboard when clicked
         keysmashElement.addEventListener("click", () => copyKeysmash());
 
-        // Listen for IPC requests from main process
-        ipc.on("keysmash", (event, args) => {
-            lemmeSmash(charset.value); // Generate a keysmash
-            ipc.send("keysmash", keysmashElement.innerHTML); // Send the keysmash to the main process
-        });
+        // Listen for IPC requests from main process (if we're running in Electron)
+        if (isElectron()) {
+            ipc.on("keysmash", (event, args) => {
+                lemmeSmash(charset.value); // Generate a keysmash
+                ipc.send("keysmash", keysmashElement.innerHTML); // Send the keysmash to the main process
+            });
+        }
 
         // Change the body text as a bonus
         new Promise(resolve => {

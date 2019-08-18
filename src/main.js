@@ -44,7 +44,7 @@ function createWindow() {
             break;
 
         case "darwin":
-            break; // Mac OS is a pain, screw it
+            break; // TODO: Mac OS is a pain, screw it (for now)
 
         default:
             window.setIcon(path.join(__dirname, "images/icon.png")); // Use the png for every other platform
