@@ -22,6 +22,18 @@ body {
     right: 0.5em;
 }
 
+.icon {
+    font-size: 20pt;
+    padding-right: 4pt;
+    vertical-align: -12%;
+}
+
+.icon-links {
+    font-size: 12pt;
+    text-decoration: none;
+    text-align: left;
+}
+
 .button {
     background-color: #ddd;
     color: rgb(80, 80, 80);

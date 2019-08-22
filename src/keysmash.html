@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#6495ED">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/stylesheet.css">
 
     <script src="js/keysmash.js"></script>
@@ -15,35 +16,46 @@
 </head>
 
 <body>
-    <!-- Generate interactive content dynamically using JavaScript DOM methods wrapped in Promises.
-    This means we can declare private vars using `let` which are garbage collected as soon as the
-    promise is fulfilled, meaning we don't have to worry about using up var names. Most of the page
-    is generated this way, unless the element created is supposed to be globally accessible -->
+    <!-- Display links in the top right to download the app and get the source code -->
+    <div class="top-right-corner">
+        <table class="plaintext">
+            <tr id="link-app">
+                <td id="icon-app">
+                    <a class="plaintext icon-links" href="https://nightshade.fun/keysmash/app/Autosmash-installer.exe">
+                    <i class="icon fa fa-window-maximize" aria-hidden="true"></i>
+                    Download the app!
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="plaintext icon-links" href="https://github.com/xBelladonna/Autosmash">
+                    <i class="icon fa fa-code" aria-hidden="true"></i>
+                    Get the source code
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-    <div class="top-right-corner" id="top-right-corner"></div>
     <audio id="yeet" autostart="false" src="audio/yeet.ogg"></audio>
+
     <p class="plaintext" id="body">Click below to generate some fresh keysmashes</p>
     <script>
-        new Promise(resolve => {
-            if (isElectron()) { // Display the key combination hint if we're in Electron
-                let element = document.createElement("p");
-                element.className = "plaintext";
-                element.innerHTML = "Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open";
-                resolve(document.body.appendChild(element));
+        new Promise((resolve, reject) => {
+            // Display the key combination hint and hide the app download link if we're in Electron
+            if (isElectron()) {
+                const link = document.getElementById("link-app");
+                link.style = "display: none;"
+                const hint = document.createElement("p");
+                hint.className = "plaintext";
+                hint.innerHTML = "Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open";
+                resolve(document.body.appendChild(hint));
             }
-            else resolve();
-        });
-
-        new Promise(resolve => {
-            if (!isElectron()) {
-                let element = document.createElement("a");
-                element.className = "plaintext";
-                element.innerHTML = "Download the app!";
-                element.href = "https://nightshade.fun/keysmash/app/Autosmash-installer.exe";
-                let div = document.getElementById("top-right-corner");
-                resolve(div.appendChild(element));
-            }
-            else resolve();
+            else reject(false);
+        }).catch(e => {
+            if (e === false) return;
+            else console.error(e);
         });
     </script>
 
@@ -56,7 +68,7 @@
                     <button id="button-generate" type="submit" class="button">sdksfdjagsjlh</button>
                     <script>
                         new Promise(resolve => {
-                            let element = document.getElementById("button-generate");
+                            const element = document.getElementById("button-generate");
                             resolve(element.addEventListener("click", () => lemmeSmash(charset.value)));
                         });
                     </script>
@@ -69,7 +81,7 @@
                         <span class="slider"></span>
                         <script>
                             new Promise(resolve => {
-                                let element = document.getElementById("capslock");
+                                const element = document.getElementById("capslock");
                                 resolve(element.addEventListener("click", () => toggleCapsLock(event)));
                             });
                         </script>
@@ -98,10 +110,10 @@
                     <input type="radio" class="plaintext" id="button-isostandard" name="keysmashtype" checked>
                     ISO Standard
                     <script>
-                        let ISOStandardButton = document.getElementById("button-isostandard");
+                        const ISOStandardButton = document.getElementById("button-isostandard");
 
                         new Promise(resolve => {
-                            let element = document.getElementById("cell-button-isostandard");
+                            const element = document.getElementById("cell-button-isostandard");
                             resolve(element.addEventListener("click", () => ISOStandardButton.checked = true));
                         });
                     </script>
@@ -111,10 +123,10 @@
                     <input type="radio" class="plaintext" id="button-fourletter" name="keysmashtype">
                     Four-letter repeating
                     <script>
-                        let fourLetterButton = document.getElementById("button-fourletter");
+                        const fourLetterButton = document.getElementById("button-fourletter");
 
                         new Promise(resolve => {
-                            let element = document.getElementById("cell-button-fourletter");
+                            const element = document.getElementById("cell-button-fourletter");
                             resolve(element.addEventListener("click", () => fourLetterButton.checked = true));
                         });
                     </script>
@@ -123,7 +135,7 @@
             <tr>
                 <!-- Create the character set text box -->
                 <td colspan="4" style="text-align: center;" id="field-charset">
-                    <input type="text" style="font-size: 16pt;" id="charset" value="asdfghjkl">
+                    <input type="text" style="font-size: 16pt;" id="charset">
                 </td>
             </tr>
         </table>
@@ -138,22 +150,22 @@
 
     <script>
         // Declare (and assign) our vars
-        let charset = document.getElementById("charset");
-        let generatedElement = document.getElementById("generated");
-        let hereElement = document.getElementById("here");
-        let keysmashElement = document.getElementById("keysmash");
+        const charset = document.getElementById("charset");
+        const generatedElement = document.getElementById("generated");
+        const hereElement = document.getElementById("here");
+        const keysmashElement = document.getElementById("keysmash");
         let capsLock = false;
-        let capsToggle = document.getElementById("capslock");
-        let sfx = document.getElementById("sfx");
+        const capsToggle = document.getElementById("capslock");
+        const sfx = document.getElementById("sfx");
 
-        // Store charset in localStorage so it persists between visits
-        let storage = window.localStorage;
+        // Store charset in localStorage so it persists between visits/Electron sessions
+        const storage = window.localStorage;
         if (!storage.getItem("charset")) storage.setItem("charset", "asdfghjkl");
         charset.value = storage.getItem("charset");
 
         // Listen for keystrokes
         window.addEventListener("keydown", event => {
-            let isFocused = document.activeElement;
+            const isFocused = document.activeElement;
 
             // If it was the caps lock key pressed, toggle caps lock state and slider
             if (event.key == "CapsLock") toggleCapsLock(event);
@@ -169,8 +181,14 @@
 
             // Copy keysmash to clipboard whenever Ctrl + C is detected
             else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "c") copyKeysmash();
+        });
 
-            else storage.setItem("charset", charset.value); // If none of the above conditions, set our charset in localStorage
+        window.addEventListener("keyup", event => {
+            const isFocused = document.activeElement;
+
+            // Update the charset in localStorage once character is input and key is lifted
+            if ((charset === isFocused) && event.key !== "Enter" && !event.ctrlKey && !event.metaKey)
+                storage.setItem("charset", charset.value);
         });
 
         // Copy the keysmash to clipboard when clicked
@@ -179,7 +197,7 @@
         // Change the body text as a bonus
         new Promise(resolve => {
             if (charset.value.length > 0) {
-                let element = document.getElementById("body");
+                const element = document.getElementById("body");
                 element.innerHTML = `Click below to generate some fresh ${ISOStandardKeysmash(charset.value)}`;
             }
         });
