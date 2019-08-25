@@ -188,12 +188,16 @@
             else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "c") copyKeysmash();
         });
 
-        window.addEventListener("keyup", event => {
-            const isFocused = document.activeElement;
-
+        charset.addEventListener("keyup", event => {
             // Update the charset in localStorage once character is input and key is lifted
-            if ((charset === isFocused) && event.key !== "Enter" && !event.ctrlKey && !event.metaKey)
+            if (event.key !== "Enter" && !event.ctrlKey && !event.metaKey)
                 storage.setItem("charset", charset.value);
+        });
+
+        // We also update the charset in localStorage if the field is clicked and if the stored value doesn't
+        // match, since keyup events aren't reliable on mobile
+        charset.addEventListener("click", event => {
+            if (storage.getItem("charset") !== charset.value) storage.setItem("charset", charset.value);
         });
 
         // Copy the keysmash to clipboard when clicked
