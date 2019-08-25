@@ -1,14 +1,11 @@
-const coolThingsToAddOntoTheEnd = [
-    "made fresh just for you",
-    "please use responsibly",
-    "I hope you enjoy it",
-    "made with love",
-    "I put a lot of effort into this one",
-    "hhh",
-    "gdfhgdfghdfgh",
-    "click it or press ctrl + c to copy",
-    "use caps lock to make them louder"
-];
+let coolThingsToAddOntoTheEnd;
+let xhr = new XMLHttpRequest();
+xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200)
+        coolThingsToAddOntoTheEnd = JSON.parse(xhr.response).data;
+};
+xhr.open("GET", "js/coolthings.json");
+xhr.send();
 
 let lastCoolThing = -1;
 
