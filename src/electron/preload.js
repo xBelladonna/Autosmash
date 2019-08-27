@@ -1,4 +1,11 @@
+const { remote } = require("electron");
 const ipc = require("electron").ipcRenderer; // Load Electron IPC communication
+const menu = remote.require("./electron/menu.js");
+
+// Make the menu pop up as a context-menu on a right-click
+document.addEventListener("contextmenu", event => {
+    menu.popup();
+});
 
 // Edit the HTML to be specific to the Electron app once the DOM content is finished loading
 document.addEventListener("DOMContentLoaded", () => {

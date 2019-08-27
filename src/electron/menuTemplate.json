@@ -1,0 +1,91 @@
+[
+    {
+        "label": "File",
+        "submenu": [
+            {
+                "role": "minimize",
+                "accelerator": "CmdOrCtrl+M"
+            },
+            {
+                "role": "close",
+                "accelerator": "CmdOrCtrl+W"
+            },
+            {
+                "role": "quit",
+                "accelerator": "CmdOrCtrl+Q"
+            }
+        ]
+    },
+    {
+        "label": "Edit",
+        "submenu": [
+            {
+                "role": "undo",
+                "accelerator": "CmdOrCtrl+Z"
+            },
+            {
+                "role": "redo",
+                "accelerator": "CmdOrCtrl+Y"
+            },
+            {
+                "type": "separator"
+            },
+            {
+                "role": "cut",
+                "accelerator": "CmdOrCtrl+X"
+            },
+            {
+                "role": "copy",
+                "accelerator": "CmdOrCtrl+C"
+            },
+            {
+                "role": "paste",
+                "accelerator": "CmdOrCtrl+V"
+            },
+            {
+                "role": "selectall",
+                "accelerator": "CmdOrCtrl+A"
+            }
+        ]
+    },
+    {
+        "label": "View",
+        "submenu": [
+            {
+                "role": "zoomIn",
+                "accelerator": "CmdOrCtrl+="
+            },
+            {
+                "role": "zoomOut",
+                "accelerator": "CmdOrCtrl+-"
+            },
+            {
+                "role": "resetZoom",
+                "accelerator": "CmdOrCtrl+0"
+            },
+            {
+                "role": "togglefullscreen",
+                "accelerator": "F11"
+            },
+            {
+                "type": "separator"
+            },
+            {
+                "role": "reload",
+                "accelerator": "CmdOrCtrl+R"
+            },
+            {
+                "role": "toggledevtools",
+                "accelerator": "CmdOrCtrl+Shift+I"
+            }
+        ]
+    },
+    {
+        "label": "Help",
+        "submenu": [
+            {
+                "label": "Suffer"
+            }
+        ]
+    }
+]

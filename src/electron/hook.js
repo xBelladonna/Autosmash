@@ -3,7 +3,7 @@ const io = require("iohook");
 const clipboard = require("clipboardy");
 const robot = require("robotjs");
 const { ipcMain } = require("electron");
-let window = require("./main.js");
+let window = require("../main.js");
 
 let shift = false;
 let capsLock = false;
