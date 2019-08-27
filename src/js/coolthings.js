@@ -27,7 +27,7 @@ function generateMessage() {
     if (chance < 0.50)
         msg = `Here is your keysmash ${getCoolThingToAddOntoTheEnd()}:`;
     else if (chance >= 0.50 && chance <= 0.70)
-        msg = `H-hewwo, hewe is youw keysmash owo ${getCoolThingToAddOntoTheEnd().replace(RegExp(/l|r/ig), "w").replace(RegExp(/th/ig), "d")}:`
+        msg = `H-hewwo, hewe is youw keysmash owo ${getCoolThingToAddOntoTheEnd().replace(/l|r/ig, "w").replace(/th/ig, "d")}:`
     else msg = `Here, have some of my best work ${getCoolThingToAddOntoTheEnd()}:`;
 
     return msg;
