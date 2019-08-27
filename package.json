@@ -29,7 +29,8 @@
             "name": "Autosmash",
             "iconUrl": "https://github.com/xBelladonna/Autosmash/blob/master/src/images/icon.png",
             "setupExe": "Autosmash-installer.exe",
-            "setupIcon": "src/images/icon.ico"
+            "setupIcon": "src/images/icon.ico",
+            "loadingGif": "src/images/loading.gif"
           }
         },
         {
