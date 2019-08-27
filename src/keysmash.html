@@ -2,6 +2,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <title>dfghjhfhsdfgahfg</title>
     <meta name="description" content="keysmash generator for all your fgsjfhgdgjfhd needs">
     <meta name="theme-color" content="#6495ED">
@@ -16,12 +17,19 @@
 </head>
 
 <body>
+    <!-- Display link to homepage in the top left corner -->
+    <div class="top-left-corner">
+        <a class="plaintext icon-link" id="link-home" href="https://nightshade.fun">
+        <i class="icon fa fa-home" aria-hidden="true"></i>
+        Go back home
+        </a>
+    </div>
     <!-- Display links in the top right to download the app and get the source code -->
     <div class="top-right-corner">
         <table class="plaintext">
             <tr id="link-app">
                 <td id="icon-app">
-                    <a class="plaintext icon-links" href="https://nightshade.fun/keysmash/app">
+                    <a class="plaintext icon-link" href="https://nightshade.fun/keysmash/app">
                     <i class="icon fa fa-window-maximize" aria-hidden="true"></i>
                     Download the app!
                     </a>
@@ -29,7 +37,7 @@
             </tr>
             <tr>
                 <td>
-                    <a class="plaintext icon-links" id="link-source-code" href="https://github.com/xBelladonna/Autosmash">
+                    <a class="plaintext icon-link" id="link-source-code" href="https://github.com/xBelladonna/Autosmash">
                     <i class="icon fa fa-code" aria-hidden="true"></i>
                     Get the source code
                     </a>
@@ -41,29 +49,7 @@
     <audio id="yeet" autostart="false" src="audio/yeet.ogg"></audio>
 
     <p class="plaintext" id="body">Click below to generate some fresh keysmashes</p>
-    <script>
-        new Promise((resolve, reject) => {
-            // Display the key combination hint and hide the app download link if we're in Electron
-            if (isElectron()) {
-                const linkApp = document.getElementById("link-app");
-                linkApp.style = "display: none;"
-
-                const linkSourceCode = document.getElementById("link-source-code");
-                linkSourceCode.href = "#";
-                linkSourceCode.addEventListener("click", () => require("electron").shell.openExternal("https://github.com/xBelladonna/Autosmash"));
-
-                const hint = document.createElement("p");
-                hint.className = "plaintext";
-                hint.innerHTML = "Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open";
-                resolve(document.body.appendChild(hint));
-            }
-            else reject(false);
-        }).catch(e => {
-            if (e === false) return;
-            else console.error(e);
-        });
-    </script>
-
+    <p class="plaintext" id="electron-hint" style="display: none;">Press Ctrl + Space to auto-type a keysmash anywhere while Autosmash is open</p>
     <div>
         <!-- Open a div container for a table containing the main UI -->
         <table class="plaintext">

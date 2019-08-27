@@ -34,7 +34,8 @@ function createWindow() {
         backgroundColor: "#fff",
         webPreferences: {
             preload: path.join(app.getAppPath(), "src/preload.js"),
-            nodeIntegration: true
+            nodeIntegration: false,
+            contextIsolation: true
         }
     });
 
@@ -50,9 +51,9 @@ function createWindow() {
         default:
             window.setIcon(path.join(__dirname, "images/icon.png")); // Use the png for every other platform
     }
-    window.setMenu(null); // Hide the menu bar since we don't need it
+    //window.setMenu(null); // Hide the menu bar since we don't need it
 
-    // and load the index.html of the app.
+    // and load the html index of the app
     window.loadURL(`file://${__dirname}/keysmash.html`);
 
     // then export the window so we can use it in node

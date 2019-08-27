@@ -16,6 +16,12 @@ body {
     padding: 0 0 1em 0;
 }
 
+.top-left-corner {
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+}
+
 .top-right-corner {
     position: absolute;
     top: 0.5em;
@@ -24,11 +30,12 @@ body {
 
 .icon {
     font-size: 20pt;
+    color: #000;
     padding-right: 4pt;
     vertical-align: -12%;
 }
 
-.icon-links {
+.icon-link {
     font-size: 12pt;
     text-decoration: none;
     text-align: left;
